@@ -110,7 +110,7 @@ router.get('/:id', ingredientController.getIngredient);
  *       '500':
  *         description: Internal server error
  */
-router.put('/:id', ingredientController.updatedIngredient);
+router.put('/:id', ingredientController.updateIngredient);
 
 /**
  * @swagger

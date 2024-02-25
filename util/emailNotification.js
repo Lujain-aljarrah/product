@@ -1,16 +1,23 @@
 const nodemailer = require('nodemailer');
+const configurationService = require('./configuration-service')
 
 /**
  * Nodemailer transporter configuration for sending email notifications.
  * @type {Object}
  */
-let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'productacc.test@gmail.com',
-        pass: 'test@2000xy',
-    },
-});
+let transporter;
+
+try {
+    transporter = nodemailer.createTransport({
+        service: configurationService.SERVICE,
+        auth: {
+            user: configurationService.USER,
+            pass: configurationService.PASS,
+        },
+    });
+} catch (error) {
+    console.error("Failed to create transporter:", error);
+}
 
 /**
  * Function to send email notification for low stock of an ingredient.
@@ -18,12 +25,21 @@ let transporter = nodemailer.createTransport({
  * @returns {Promise<void>} - A Promise representing the asynchronous operation.
  */
 const sendEmailNotification = async (ingredient) => {
-    await transporter.sendMail({
-        from: 'productacc.test@gmail.com',
-        to: 'lujainaljarrah92@gmail.com',
-        subject: 'Low Stock Notification',
-        text: `Ingredient ${ingredient.name} is running low in stock. Please restock soon.`,
-    });
+    try {
+        if (!transporter) {
+            console.error("Transporter is not initialized.");
+            return;
+        }
+        
+        await transporter.sendMail({
+            from: configurationService.USER,
+            to: configurationService.RECEIVER,
+            subject: 'Low Stock Notification',
+            text: `Ingredient ${ingredient.name} is running low in stock. Please restock soon.`,
+        });
+    } catch (error) {
+        console.error("Failed to send email:", error);
+    }
 };
 
 module.exports = sendEmailNotification;

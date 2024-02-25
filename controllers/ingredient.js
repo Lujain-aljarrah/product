@@ -60,7 +60,7 @@ const getIngredient = async (req, res) => {
  * @param {Object} res - Express response object.
  * @returns {Promise<void>} - A Promise representing the asynchronous operation.
  */
-const updatedIngredient = async (req, res) => {
+const updateIngredient = async (req, res) => {
     try {
         const { name, initialStock } = req.body;
         const updatedIngredient = await Ingredient.findByIdAndUpdate(
@@ -106,6 +106,6 @@ module.exports = {
     getIngredients,
     createIngredient,
     getIngredient,
-    updatedIngredient,
+    updateIngredient,
     deleteIngredient,
 };

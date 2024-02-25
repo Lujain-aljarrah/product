@@ -1,14 +1,14 @@
-/* eslint-disable no-undef */
 const express = require('express');
 const { specs, swaggerUi } = require('./swagger');
 const mongoConnect = require('./util/database');
 const productRoutes = require('./routes/product');
 const ingredientRoutes = require('./routes/ingredient');
 const orderRoutes = require('./routes/order');
+const configurationService = require('./util/configuration-service')
 
 const startServer = async () => {
     const app = express();
-    const PORT = process.env.PORT || 3000;
+    const PORT = configurationService.PORT || 3000;
 
     app.use(express.json());
 
